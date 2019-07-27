@@ -40,7 +40,7 @@ class SpaceController extends Controller
                 }
             }";
 
-        if(!env('APP_ENV') == 'production')
+        if(env('APP_ENV') == 'production')
         {
             // Creates the directory
             mkdir($home_path, 0700);
