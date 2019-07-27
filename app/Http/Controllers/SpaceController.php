@@ -53,8 +53,16 @@ class SpaceController extends Controller
 
 
             // Creates nginx config
-            $nginx_file = fopen("/etc/nginx/sites-enabled/spaces/".$clean_name, "w");
+            $nginx_file = fopen("/etc/nginx/sites-enabled/spaces_".$clean_name, "w");
+
             fwrite($nginx_file, $nginx_config);
+            fclose($nginx_file);
+
+            $index_file = fopen($home_path.'/index.html', "w");
+            fwrite($index_file, 'Welcome to your space, '.$clean_name);
+            fclose($index_file);
+            exec('systemctl restart nginx');
+
         }
 
 
