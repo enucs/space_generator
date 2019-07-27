@@ -58,9 +58,6 @@ class SpaceController extends Controller
             fwrite($nginx_file, $nginx_config);
             fclose($nginx_file);
 
-            $index_file = fopen($home_path.'/index.html', "w");
-            fwrite($index_file, 'Welcome to your space, '.$clean_name);
-            fclose($index_file);
             exec('systemctl restart nginx');
 
         }
