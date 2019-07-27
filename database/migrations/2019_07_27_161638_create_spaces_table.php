@@ -16,10 +16,8 @@ class CreateSpacesTable extends Migration
         Schema::create('spaces', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('subdomain');
-
-            $table->integer('domain_record_id');
-            $table->string('ftp_user');
+            $table->string('password');
+            $table->string('domain_record_id');
 
             $table->timestamps();
         });

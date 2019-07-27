@@ -11,10 +11,9 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('index');
 });
 
-Route::post('/space', function(\Illuminate\Support\Facades\Request $request) {
-    dd($request);
-});
+Route::post('/space', 'SpaceController@store')->name('space.create');

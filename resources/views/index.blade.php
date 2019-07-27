@@ -14,7 +14,8 @@
     </header>
     <div class="flex">
         <div></div>
-        <form action="" class="third">
+        <form action="{{ route('space.create') }}" method="post" class="third">
+            @csrf
             <input class="stack" placeholder="Name" />
             <input class="stack" placeholder="Sub Domain" />
             <input type="submit" class="stack" value="Create Space" />

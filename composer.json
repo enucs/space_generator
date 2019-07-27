@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.0",
         "graham-campbell/digitalocean": "^5.2",
         "guzzlehttp/guzzle": "^6.3",
+        "laravel/envoy": "~1.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "toin0u/digitalocean-v2": "^2.2"
