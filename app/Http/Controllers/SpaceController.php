@@ -43,11 +43,11 @@ class SpaceController extends Controller
         if(env('APP_ENV') == 'production')
         {
             // Creates the directory
-            mkdir($home_path, 0700);
+            exec('sh mkdir -m 700 $home_path');
 
             // Creates the user
-            exec('useradd '.$clean_name.' -p '.$password.' -g spaceftp -d '.$home_path.' -s /bin/false');
-            exec('chown spaceftp:'.$clean_name.' '.$home_path);
+            exec('sh useradd '.$clean_name.' -p '.$password.' -g spaceftp -d '.$home_path.' -s /bin/false');
+            exec('sh chown spaceftp:'.$clean_name.' '.$home_path);
 
             $domain_record = DigitalOcean::domainRecord()->create('enucs.org.uk', 'A', $clean_name, env('SERVER_IPv4'));
 
