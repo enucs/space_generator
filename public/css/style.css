@@ -1,3 +1,15 @@
+header {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-family: 'Anaheim';
+}
+
+header img {
+    align-self: center;
+    margin-right: 16px;
+}
+
 .content {
     max-width: 700px;
     margin: 50px auto;

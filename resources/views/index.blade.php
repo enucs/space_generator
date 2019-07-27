@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Anaheim|Roboto+Slab&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://unpkg.com/picnic">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div class="content">
     <header>
-        <img class="logo" src="/img/logo.png" />
+        <img src="/img/logo.png" />
         <h1>Space Generator</h1>
     </header>
-    <form action="">
+    <div class="flex">
+        <div></div>
+        <form action="" class="third">
+            <input class="stack" placeholder="Name" />
+            <input class="stack" placeholder="Sub Domain" />
+            <input type="submit" class="stack" value="Create Space" />
+        </form>
+        <div></div>
+    </div>
 
-    </form>
     <hr>
     <p>List of spaces here</p>
 </div>
