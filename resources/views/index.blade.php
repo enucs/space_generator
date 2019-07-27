@@ -16,15 +16,24 @@
         <div></div>
         <form action="{{ route('space.create') }}" method="post" class="third">
             @csrf
-            <input class="stack" placeholder="Name" />
-            <input class="stack" placeholder="Sub Domain" />
+            <input class="stack" placeholder="Name" name="name"/>
             <input type="submit" class="stack" value="Create Space" />
+            @if($errors->first() != null)
+                <b>{{ $errors->first() }}</b>
+            @endif
         </form>
         <div></div>
     </div>
 
     <hr>
-    <p>List of spaces here</p>
+    @foreach(App\Space::all() as $space)
+        <article class="card">
+            <header>
+                <h3>{{ $space->name }}.spaces.enucs.org.uk</h3>
+                <span><code>{{ $space->name }}</code>:<code>{{ $space->password }}</code></span>
+            </header>
+        </article>
+    @endforeach
 </div>
 </body>
 

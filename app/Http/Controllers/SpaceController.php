@@ -6,18 +6,39 @@ use App\Space;
 use GrahamCampbell\DigitalOcean\Facades\DigitalOcean;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use function Psy\debug;
 
 class SpaceController extends Controller
 {
     function store(Request $request) {
         Validator::make($request->all(), [
-            'name' => 'required|unique:spaces',
-            'domain' => 'required|unique:spaces',
+            'name' => 'required',
         ])->validate();
 
-        $clean_name = escapeshellcmd($request->name);
+        $clean_name = strtolower((escapeshellcmd(preg_replace("/[^a-zA-Z0-9]+/", "", $request->name))));
+
+        if(Space::find($clean_name) != null)
+        {
+            return back()->withErrors('not_unique', 'Name already exists!');
+        }
+
+
         $home_path = env('SPACES_DIR')."/".$clean_name;
         $password = base64_encode(random_bytes(10));
+        $nginx_config = "
+            server {
+                listen 80;
+                listen [::]:80;
+        
+                root $home_path;
+                index index.html index.htm index.nginx-debian.html;
+        
+                server_name $clean_name.enucs.org.uk;
+        
+                location / {
+                        try_files \$uri \$uri/ =404;
+                }
+            }";
 
         if(!env('APP_ENV') == 'production')
         {
@@ -26,16 +47,23 @@ class SpaceController extends Controller
 
             // Creates the user
             exec('useradd '.$clean_name.' -p '.$password.' -g spaceftp -d '.$home_path.' -s /bin/false');
+            exec('chown spaceftp:'.$clean_name.' '.$home_path);
 
-            $domain_record = DigitalOcean::domainRecord()->create('enucs.org.uk', 'A', 'hello', env('SERVER_IPv4'));
-        } else {
-            $domain_record = ['id'=>'1'];
+            $domain_record = DigitalOcean::domainRecord()->create('enucs.org.uk', 'A', $clean_name, env('SERVER_IPv4'));
+
+
+            // Creates nginx config
+            $nginx_file = fopen("/etc/nginx/sites-enabled/spaces/".$clean_name, "w");
+            fwrite($nginx_file, $nginx_config);
         }
 
-        Space::create([
-            'name' => $clean_name,
-            'password' => $password,
-            'domain_record_id' => $domain_record->id
-        ])->save();
+
+        $space = new Space;
+        $space->name = $clean_name;
+        $space->password = $password;
+        $space->domain_record_id = env('APP_ENV') == 'production' ? $domain_record->id : 'local';
+        $space->save();
+
+        return back();
     }
 }
