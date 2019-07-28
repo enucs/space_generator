@@ -11,9 +11,10 @@
 |
 */
 
+Route::group(['middleware' =>['auth.basic']], function (){
+    Route::get('/', function () {
+        return view('index');
+    });
 
-Route::get('/', function () {
-    return view('index');
+    Route::post('/space', 'SpaceController@store')->name('space.create');
 });
-
-Route::post('/space', 'SpaceController@store')->name('space.create');
